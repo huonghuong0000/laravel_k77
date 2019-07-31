@@ -28,8 +28,8 @@
                 <span class="icon"><i class="icon-shopping-cart"></i></span>
                 <h2>Cảm ơn bạn đã mua hàng, Đơn hàng của bạn đã đặt thành công</h2>
                 <p>
-                    <a href="index.html" class="btn btn-primary">Trang chủ</a>
-                    <a href="shop.html" class="btn btn-primary btn-outline">Tiếp tục mua sắm</a>
+                    <a href="{{ route('client.home.index') }}" class="btn btn-primary">Trang chủ</a>
+                    <a href="{{ route('client.product.shop') }}" class="btn btn-primary btn-outline">Tiếp tục mua sắm</a>
                 </p>
             </div>
         </div>

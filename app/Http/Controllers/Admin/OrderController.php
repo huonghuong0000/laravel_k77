@@ -17,6 +17,12 @@ class OrderController extends Controller
         return view('admin.orders.index');
     }
 
+    // processed
+    public function processed()
+    {
+        return view('admin.orders.processed');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

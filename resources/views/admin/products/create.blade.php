@@ -63,7 +63,7 @@
                                     <input id="img" type="file" name="img" class="form-control hidden"
                                         onchange="changeImg(this)">
                                     <img id="avatar" class="thumbnail" width="100%" height="350px"
-                                        src="img/import-img.png">
+                                        src="/assets/admin/img/import-img.png">
                                 </div>
                             </div>
                             <div class="col-md-12">

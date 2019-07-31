@@ -10,29 +10,48 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-// , 'middleware' => 'productId']
 
-Route::group(['namespace' => 'Client'], function () {
-    // // Route::get('', 'HomeController@index')->middleware('productId'); //cách 1: trở trực tiếp đến
-    // Route::get('', [
-    //     'uses' => 'HomeController@index',
-    //     'middleware' => ['productId', 'guest']
-    // ]); //cách 2: truyền nhiều thì dùng mảng
+// Route::group(['namespace' => 'Client'], function () {
 
-    Route::group(['prefix' => 'home'], function() {
-        Route::get('', 'HomeController@index');
-        Route::get('about', 'HomeController@about');
-        Route::get('contact', 'HomeController@contact') ;
-    });
-
-    Route::group(['prefix' => 'cart'], function () {
-        Route::get('', 'CartController@cart') ;
-        Route::get('checkout', 'CartController@checkout') ;
-        Route::get('complete', 'CartController@complete') ;
-    });
-
-    Route::group(['prefix' => 'product'], function () {
-        Route::get('', 'ProductController@shop') ;
-        Route::get('detail/{id}', 'ProductController@detail') ;
-    });
+    
+Route::group(['prefix' => 'home'], function() {
+    Route::get('', [
+        'as' => 'client.home.index',
+        'uses' => 'HomeController@index'
+    ]);
+    Route::get('about', [
+        'as' => 'client.home.about',
+        'uses' => 'HomeController@about'
+    ]);  //client.home.about
+    Route::get('contact', [
+        'as' => 'client.home.contact',
+        'uses' => 'HomeController@contact'
+    ]) ;
 });
+
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('', [
+        'as' => 'client.cart.cart',
+        'uses' => 'CartController@cart'
+    ]) ;
+    Route::get('checkout', [
+        'as' => 'client.cart.checkout',
+        'uses' => 'CartController@checkout'
+    ]) ;
+    Route::get('complete', [
+        'as' => 'client.cart.complete',
+        'uses' => 'CartController@complete'
+    ]) ;
+});
+
+Route::group(['prefix' => 'product'], function () {
+    Route::get('', [
+        'as' => 'client.product.shop',
+        'uses' => 'ProductController@shop'
+    ]) ;
+    Route::get('detail/{id}', [
+        'as' => 'client.product.detail',
+        'uses' => 'ProductController@detail'
+    ]) ;
+});
+// });

@@ -28,12 +28,18 @@
                             <a href="{{ route('admin.categories.create') }}" class="btn btn-danger">
                                 Thêm danh mục
                             </a>
-                            <h3 style="margin: 0;">
+                            <h3 style="margin-top: 20px;">
                                 <strong>Phân cấp Menu
                                 </strong>
                             </h3>
                             <div class="vertical-menu">
-                                <div class="item-menu active">Danh mục </div>
+
+                                {{-- //forelse --}}
+                                @include('admin.partials.categories_rows',
+                                    ['level' => 0])
+
+
+                                {{-- <div class="item-menu active">Danh mục </div>
                                 <div class="item-menu"><span>Nam</span>
                                     <div class="category-fix">
                                         <a class="btn-category btn-primary" href="editcategory.html"><i
@@ -73,7 +79,7 @@
                                         <a class="btn-category btn-danger" href="#"><i class="fas fa-times"></i></i></a>
 
                                     </div>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>

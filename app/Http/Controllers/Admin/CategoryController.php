@@ -15,7 +15,25 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        $categories =  $this->getSubCategories(0);
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
+     * Get the Sub Categories
+     * 
+     * @param int $parent_id
+     * @return mix
+     */
+    private function getSubCategories($parent_id)
+    {
+        $categories = Category::where('parent_id', $parent_id)
+            ->get()
+            ->map(function($query){
+                $query->sub = $this->getSubCategories($query->id);
+                return $query;
+            });
+        return $categories;
     }
 
     /**
@@ -25,8 +43,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
-
+        $categories = $this->getSubCategories(0);
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
