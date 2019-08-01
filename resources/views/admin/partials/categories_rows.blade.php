@@ -6,7 +6,7 @@
             @endfor  {{ $category->name }}
         </span>
         <div class="category-fix">
-            <a class="btn-category btn-primary" href="#">
+            <a class="btn-category btn-primary" href="{{ route('admin.categories.edit', $category->id) }}">
                 <i class="fa fa-edit"></i></a>
             <a class="btn-category btn-danger" href="#">
                 <i class="fas fa-times"></i></a>

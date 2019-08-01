@@ -6,6 +6,11 @@
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
         <div class="row">
             <div class="col-lg-12">
+                @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+                @endif
                 <h1 class="page-header">Sửa sản phẩm</h1>
             </div>
         </div>
@@ -17,6 +22,14 @@
                     <form action="{{ route('admin.products.update', $product->id) }}" method="POST">
                         @csrf
                         @method('PUT')
+                        @if ($errors->any())
+                            <div class="alert bg-danger" role="alert">
+                                <svg class="glyph stroked cancel">
+                                    <use xlink:href="#stroked-cancel"></use>
+                                </svg>{{ $errors->first() }}<a href="#" class="pull-right">
+                                    <span class="glyphicon glyphicon-remove"></span></a>
+                            </div>
+                        @endif
                         <div class="panel-body">
                             <div class="row" style="margin-bottom:40px">
 
@@ -32,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Mã sản phẩm</label>
-                                        <input type="text" name="code" class="form-control" value="SP01">
+                                        <input type="text" name="code" class="form-control" value="{{ $product->product_code }}">
                                     </div>
                                     <div class="form-group">
                                         <label>Tên sản phẩm</label>
@@ -65,13 +78,13 @@
                                         <input id="img" type="file" name="img" class="form-control hidden"
                                             onchange="changeImg(this)">
                                         <img id="avatar" class="thumbnail" width="100%" height="350px"
-                                            src="/assets/admin/img/import-img.png">
+                                            src="/assets/admin/img/{{ $product->avatar }}">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Thông tin</label>
-                                        <textarea name="info" style="width: 100%;height: 100px;"></textarea>
+                                        <textarea name="info" style="width: 100%;height: 100px;">{{ $product->detail }}</textarea>
                                     </div>
                                 </div>
                             </div>

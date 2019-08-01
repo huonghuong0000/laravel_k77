@@ -25,12 +25,13 @@ class CategoryController extends Controller
      * @param int $parent_id
      * @return mix
      */
-    private function getSubCategories($parent_id)
+    private function getSubCategories($parent_id, $ignore_id=null)
     {
         $categories = Category::where('parent_id', $parent_id)
+            ->where('id', '<>', $ignore_id)
             ->get()
-            ->map(function($query){
-                $query->sub = $this->getSubCategories($query->id);
+            ->map(function($query) use($ignore_id){
+                $query->sub = $this->getSubCategories($query->id, $ignore_id);
                 return $query;
             });
         return $categories;
@@ -60,7 +61,7 @@ class CategoryController extends Controller
             'name' => 'required|unique:categories'
         ]);
 
-        //chỉ lấy 2 giá trị
+        //bao nhiêu ô input truyền bấy nhiêu
         $attributes = $request->only([
             'parent_id', 'name'
         ]);
@@ -68,18 +69,8 @@ class CategoryController extends Controller
         $category = Category::create($attributes);
 
         //quay về trang sửa, có 2 tham số dùng mảng truyền vào
-        return redirect()->route('admin.categories.edit', $category->id);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('admin.categories.edit', $category->id)
+        ->with('success', 'Tạo mới thành công');
     }
 
     /**
@@ -90,7 +81,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.categories.edit');
+        $category = Category::findOrFail($id);
+        $categories = $this->getSubCategories(0, $id);
+        return view('admin.categories.edit', compact('categories', 'category'));
     }
 
     /**
@@ -101,6 +94,34 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+    {
+        $request->validate([
+            'parent_id' => 'required|numeric|min:0',
+            'name' => 'required|unique:categories,id,'.$id
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        //chỉ lấy 2 giá trị
+        $attributes = $request->only([
+            'parent_id', 'name'
+        ]);
+
+        $category = $category->fill($attributes);
+        $category->save();
+
+        //quay về trang sửa, có 2 tham số dùng mảng truyền vào
+        return redirect()->route('admin.categories.edit', $category->id)
+            ->with('success', 'Cập nhật thành công!!!');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
         //
     }

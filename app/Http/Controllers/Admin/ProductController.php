@@ -37,19 +37,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = Product::create([
+            'category_id' => $request->category_id,
+            'product_code' => $request->product_code,
+            'name' => $request->name,
+            'price' => $request->price,
+            'is_highlight' => $request->is_highlight,
+            'quantity' => $request->quantity,
+            'avatar' => $request->avatar,
+            'detail' => $request->detail,
+            'description' => $request->description
+        ]);
+
+        // session()->flash('success','Tạo mới sản phẩm thành công');
+        return redirect()->route('admin.products.edit',$product->id)
+                ->with('success','tạo mới sản phẩm thành công');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -59,7 +63,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.products.edit');
+        $product = Product::findOrFail($id);
+        return view('admin.products.edit', compact('product'));
     }
 
     /**
@@ -70,6 +75,30 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->category_id = $request->category_id;
+        $product->product_code = $request->product_code;
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->is_highlight = $request->is_highlight;
+        $product->quantity = $request->quantity;
+        $product->avatar = $request->avatar;
+        $product->detail = $request->detail;
+        $product->description = $request->description;
+        $product->save();
+
+        return redirect()->route('admin.products.edit',$product->id)
+        ->with('success','Sửa sản phẩm thành công !!!');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
         //
     }

@@ -33,18 +33,6 @@
                 <div class="panel-body">
                     <div class="bootstrap-table">
                         <div class="table-responsive">
-
-                            {{--  <div class="alert bg-success" role="alert">
-                                <svg class="glyph stroked checkmark">
-                                    <use xlink:href="#stroked-checkmark"></use>
-                                </svg>Đã thêm thành công
-                                <a href="#" class="pull-right">
-                                    <span
-                                        class="glyphicon glyphicon-remove">
-                                    </span>
-                                </a>
-                            </div>  --}}
-
                             <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Thêm sản phẩm</a>
                             <table class="table table-bordered" style="margin-top:20px;">
                                 <thead>
@@ -91,9 +79,9 @@
                                                 </a>
 
                                             </td>
-                                            <td>Áo khoác nam</td>
+                                            <td>{{ $product->categories()->first()->name ?? '' }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-warning">
+                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning">
                                                     <i class="fa fa-pencil" aria-hidden="true"></i> Sửa
                                                 </a>
                                                 <a href="#" class="btn btn-danger">

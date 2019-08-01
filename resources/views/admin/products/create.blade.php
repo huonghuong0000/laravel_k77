@@ -6,6 +6,11 @@
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     <div class="row">
         <div class="col-lg-12">
+            @if (session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+            @endif
             <h1 class="page-header">Thêm sản phẩm</h1>
         </div>
     </div>
