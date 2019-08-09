@@ -12,9 +12,20 @@
     <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
             <div class="panel panel-primary">
+                    @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session()->get('success') }}
+                    </div>
+                    @endif
+
                 <div class="panel-heading">
                     <i class="fas fa-user"></i>Sửa thành viên - {{ $user->email }}
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
                         @csrf
                         @method('PUT')
@@ -23,10 +34,8 @@
                             <div class="col-md-8 col-lg-8 col-lg-offset-2">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" name="email" class="form-control" value="{{ $user->email, old('email') }}">
-                                    {{-- <div class="alert alert-danger" role="alert">
-                                        <strong>email đã tồn tại!</strong>
-                                    </div> --}}
+                                    <input type="text" name="email" class="form-control" value="{{ $user->email }}">
+                                    
                                 </div>
                                 <div class="form-group">
                                     <label>password</label>
@@ -34,7 +43,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Full name</label>
-                                    <input type="full" name="name" class="form-control" value="{{ $user->name }}">
+                                    <input type="text" name="name" class="form-control" value="{{ $user->name }}">
                                 </div>
                                 <div class="form-group">
                                     <label>Address</label>
@@ -46,9 +55,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Level</label>
-                                    <select name="level" class="form-control" value="">
-                                        <option value="1">admin</option>
-                                        <option selected value="2">user</option>
+                                    <select name="level" class="form-control">
+                                        <option @if($user->level==1) selected @endif value="1">Admin</option>
+                                        <option @if ($user->level==2) selected @endif value="2">User</option>
                                     </select>
                                 </div>
                             </div>

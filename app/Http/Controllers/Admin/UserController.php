@@ -8,6 +8,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    const PER_PAGE = 6;
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users= User::paginate(6);
+        $users= User::paginate(self::PER_PAGE);
         return view('admin.users.index', compact('users'));
     }
 
@@ -37,7 +38,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:4',
+            'name' => 'required',
+        ]);
+
+        $attributes = $request->only([
+            'email',
+            'password',
+            'name',
+            'address',
+            'phone'
+        ]);
+
+        $user = User::create($attributes);
+        return redirect()->route('admin.users.edit', $user->id)->with('success', 'Tạo mới thành công');
     }
 
     /**
@@ -72,16 +88,31 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:4',
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'level' => 'required'
+        ]);
+
         $user = User::findOrFail($id);
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->name = $request->name;
-        $user->address = $request->address;
-        $user->phone = $request->phone;
+
+        $attributes = $request->only([
+            'email',
+            'password',
+            'name',
+            'address',
+            'phone',
+            'level'
+        ]);
+
+        $user = $user->fill($attributes);
         $user->save();
 
-        return redirect()->route('admin.users.index',$user->id)
-        ->with('success','sửa tài khoản thành công');
+        return redirect()->route('admin.users.edit',$user->id)
+        ->with('success','Sửa tài khoản thành công !!!');
     }
 
     /**

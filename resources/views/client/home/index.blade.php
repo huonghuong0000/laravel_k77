@@ -72,6 +72,7 @@
     </div>
 </div>
 
+{{--  sản phẩm nổi bật  --}}
 <div class="colorlib-shop">
     <div class="container">
         <div class="row">
@@ -81,7 +82,40 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 text-center">
+
+            @forelse ($products as $product)
+                <div class="col-md-3 text-center">
+                    <div class="product-entry">
+                        <div class="product-img" style="background-image: url(/assets/admin/img/{{ $product->avatar }} );">
+                            <div class="cart">
+                                <p>
+                                    <span class="addtocart">
+                                        <a href="{{ route('client.cart.cart') }}">
+                                            <i class="icon-shopping-cart"></i>
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a href="{{ route('client.product.detail', $product->id) }}">
+                                            <i class="icon-eye"></i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="desc">
+                            <h3>
+                                <a href="{{ route('client.product.detail', $product->id) }}">{{ $product->name }}</a>
+                            </h3>
+                            <p class="price">
+                                <span>{{ number_format($product->price) }} đ</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                Không có sản phẩm nổi bật nào !!!
+            @endforelse
+            {{--  <div class="col-md-3 text-center">
                 <div class="product-entry">
                     <div class="product-img" style="background-image: url(/assets/client/images/quan-kaki-xanh-den-qk171-9771.jpg);">
                         <div class="cart">
@@ -158,11 +192,14 @@
                         <p class="price"><span>3.000.000 đ</span></p>
                     </div>
                 </div>
-            </div>
+            </div>  --}}
         </div>
     </div>
 </div>
-
+<div align="right">
+    {{ $products->links() }}
+</div>
+{{--  sản phẩm mới = ko nối b  --}}
 <div class="colorlib-shop">
     <div class="container">
         <div class="row">
@@ -171,9 +208,38 @@
                 <p>Đây là những sản phẩm mới của năm năm 2019</p>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-3 text-center">
+            @forelse ($products as $product)
+                <div class="col-md-3 text-center">
+                    <div class="product-entry">
+                        <div class="product-img" style="background-image: url(/assets/client/images/ao-so-mi-trang-kem-asm836-8193.jpg);">
+                            <p class="tag"><span class="new">New</span></p>
+                            <div class="cart">
+                                <p>
+                                    <span class="addtocart">
+                                        <a href="{{ route('client.cart.cart', $product->id) }}">
+                                            <i class="icon-shopping-cart"></i>
+                                        </a>
+                                    </span>
+                                    <span>
+                                        <a href="{{ route('client.product.detail', $product->id) }}">
+                                            <i class="icon-eye"></i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="desc">
+                            <h3><a href="{{ route('client.product.detail', $product->id) }}">{{ $product->name }}</a></h3>
+                            <p class="price"><span>{{ number_format($product->price) }} đ</span></p>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                
+            @endforelse
+            
+            {{--  <div class="col-md-3 text-center">
                 <div class="product-entry">
                     <div class="product-img" style="background-image: url(/assets/client/images/ao-so-mi-trang-kem-asm836-8193.jpg);">
                         <p class="tag"><span class="new">New</span></p>
@@ -339,8 +405,12 @@
                         <p class="price"><span>3.000.000 đ</span></p>
                     </div>
                 </div>
-            </div>
+            </div>  --}}
         </div>
     </div>
 </div>
+<div align="right">
+        {{ $products->links() }}
+</div>
+
 @endsection

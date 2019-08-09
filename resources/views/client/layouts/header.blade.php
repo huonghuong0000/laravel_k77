@@ -23,7 +23,13 @@
                             </li>
                             <li><a href="{{ route('client.home.about') }}">Giới thiệu</a></li>
                             <li><a href="{{ route('client.home.contact') }}">Liên hệ</a></li>
-                            <li><a href="{{ route('client.cart.cart') }}"><i class="icon-shopping-cart"></i> Giỏ hàng [0]</a></li>
+                            <li>
+                                <a href="{{ route('client.cart.cart') }}">
+                                    <i class="icon-shopping-cart"></i>
+                                        Giỏ hàng [<span class="cart-quantity">{{ \Cart::getTotalQuantity()>9?"9+":\Cart::getTotalQuantity() }}
+                                                    </span>]
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

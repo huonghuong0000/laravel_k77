@@ -11,7 +11,7 @@
                         <div class="col-md-5">
                             <div class="product-entry">
                                 <div class="product-img"
-                                    style="background-image: url(images/ao-so-mi-trang-kem-asm836-8193.jpg);">
+                                    style="background-image: url(/assets/client/images/ao-so-mi-trang-kem-asm836-8193.jpg);">
 
                                 </div>
 
@@ -21,9 +21,9 @@
                             <form action="product/AddCart" method="post">
 
                                 <div class="desc">
-                                    <h3>Áo Sơ Mi Trắng Kem ASM844</h3>
+                                    <h3>{{ $product->name }}</h3>
                                     <p class="price">
-                                        <span>150,000 đ</span>
+                                        <span>{{ $product->price }} đ</span>
                                     </p>
                                     <p>thông tin</p>
                                     <p style="text-align: justify;">
@@ -32,7 +32,6 @@
                                         chọn size phù hợp để xem và thử trực tiếp.
 
                                     </p>
-
 
                                     <div class="row row-pb-sm">
                                         <div class="col-md-4">
@@ -55,8 +54,8 @@
                                         </div>
                                     </div>
                                     <input type="hidden" name="id_product" value="1">
-                                    <p><button class="btn btn-primary btn-addtocart" type="submit"> Thêm vào giỏ
-                                            hàng</button></p>
+                                    <p>
+                                    <button class="btn btn-primary btn-addtocart" type="submit"> Thêm vào giỏ hàng</button></p>
                                 </div>
                             </form>
                         </div>

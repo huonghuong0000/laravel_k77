@@ -44,6 +44,8 @@ Route::group(['prefix' => 'cart'], function () {
     ]) ;
 });
 
+Route::post('cart/add', 'CartController@add');
+
 Route::group(['prefix' => 'product'], function () {
     Route::get('', [
         'as' => 'client.product.shop',

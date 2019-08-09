@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $table = 'products';
-
-    public function categories()
+    protected $guarded = ['id'];
+    /**
+     * Get the category that own the product.
+     */
+    public function category()
     {
-        return $this->belongsto('App\Models\Category');
+        return $this->belongsTo('App\Models\Category');
     }
 }

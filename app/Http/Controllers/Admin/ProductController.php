@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -13,20 +14,37 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    const PER_PAGE = 6;
+
     public function index()
     {
-        $products = Product::paginate(6);
+        $products= Product::latest()->with('category')->paginate(self::PER_PAGE); //paginate(): giới hạn bản ghi trên 1 trang
+        // $products = Product::paginate(7);
         return view('admin.products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        return view('admin.products.create');
+        $categories = $this->getSubCategories(0);
+        return view('admin.products.create', compact('categories'));
+    }
+
+    /**
+     * Get the sub categories.
+     * 
+     * @param int $parent_id
+     * @return mix
+     */
+    private function getSubCategories($parent_id, $ignore_id=null)
+    {
+        $categories = Category::where('parent_id', $parent_id)
+            ->where('id', '<>', $ignore_id)
+            ->get()
+            ->map(function($query) use($ignore_id){
+                $query->sub = $this->getSubCategories($query->id, $ignore_id);
+                return $query;
+            });
+        return $categories;
     }
 
     /**
@@ -37,21 +55,35 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = Product::create([
-            'category_id' => $request->category_id,
-            'product_code' => $request->product_code,
-            'name' => $request->name,
-            'price' => $request->price,
-            'is_highlight' => $request->is_highlight,
-            'quantity' => $request->quantity,
-            'avatar' => $request->avatar,
-            'detail' => $request->detail,
-            'description' => $request->description
+        $request->validate([
+            'name' => 'required',
+            'category_id' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0',
+            // 'avatar' => 'sometimes|image'
         ]);
 
-        // session()->flash('success','Tạo mới sản phẩm thành công');
-        return redirect()->route('admin.products.edit',$product->id)
-                ->with('success','tạo mới sản phẩm thành công');
+        $attributes = $request->only([
+            'category_id', 
+            'name', 
+            'product_code', 
+            'price', 
+            'is_highlight',
+            'detail',
+            'description',
+            'quantity'
+        ]);
+
+        if ($request->hasFile('avatar'))
+        {
+            $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
+            $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
+            $request->avatar->move($destinationDir, $fileName);
+            $attributes['avatar'] = $fileName;
+        }
+
+        $product = Product::create($attributes);
+        return redirect()->route('admin.products.edit', $product->id)->with('success', 'Tạo mới thành công');
     }
 
 
@@ -64,7 +96,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('admin.products.edit', compact('product'));
+        $categories = $this->getSubCategories(0, $id);
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -76,16 +109,37 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required',
+            'category_id' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:0',
+            // 'avatar' => 'sometimes|image'
+        ]);
+
         $product = Product::findOrFail($id);
-        $product->category_id = $request->category_id;
-        $product->product_code = $request->product_code;
-        $product->name = $request->name;
-        $product->price = $request->price;
-        $product->is_highlight = $request->is_highlight;
-        $product->quantity = $request->quantity;
-        $product->avatar = $request->avatar;
-        $product->detail = $request->detail;
-        $product->description = $request->description;
+        // $category = Category::findOrFail($id);
+
+        $attributes = $request->only([
+            'category_id', 
+            'name', 
+            'product_code', 
+            'price', 
+            'is_highlight',
+            'detail',
+            'description',
+            'quantity'
+        ]);
+
+        if ($request->hasFile('avatar'))
+        {
+            $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
+            $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
+            $request->avatar->move($destinationDir, $fileName);
+            $attributes['avatar'] = $fileName;
+        }
+
+        $product = $product->fill($attributes);
         $product->save();
 
         return redirect()->route('admin.products.edit',$product->id)
@@ -111,6 +165,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // echo 'Xóa sp';
+        $product = Product::destroy($id);
+        return redirect()->route('admin.products.index')
+        ->with('success','Xóa sản phẩm thành công !!!');
     }
 }
