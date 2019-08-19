@@ -59,8 +59,9 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->address = $request->address;
         $user->phone = $request->phone;
+        $user->level = $request->level;
         $user->save();
-        
+
         return redirect()->route('admin.users.edit', $user->id)->with('success', 'Tạo mới thành công');
     }
 
