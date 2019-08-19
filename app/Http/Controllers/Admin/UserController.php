@@ -44,15 +44,23 @@ class UserController extends Controller
             'name' => 'required',
         ]);
 
-        $attributes = $request->only([
-            'email',
-            'password',
-            'name',
-            'address',
-            'phone'
-        ]);
+        //bcrypt($request->password)
+        // $attributes = $request->only([
+        //     'email',
+        //     'pasword' => bcrypt($request->password),
+        //     'name',
+        //     'address',
+        //     'phone'
+        // ]);
 
-        $user = User::create($attributes);
+        $user = new User;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->name = $request->name;
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        $user->save();
+        
         return redirect()->route('admin.users.edit', $user->id)->with('success', 'Tạo mới thành công');
     }
 

@@ -45,6 +45,9 @@ Route::group(['prefix' => 'cart'], function () {
 });
 
 Route::post('cart/add', 'CartController@add');
+Route::post('cart/update', 'CartController@update');
+Route::post('cart/destroy', 'CartController@destroy');
+Route::post('cart/store', 'CartController@store');
 
 Route::group(['prefix' => 'product'], function () {
     Route::get('', [

@@ -76,10 +76,14 @@ class ProductController extends Controller
 
         if ($request->hasFile('avatar'))
         {
-            $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
-            $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
-            $request->avatar->move($destinationDir, $fileName);
-            $attributes['avatar'] = $fileName;
+            // $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
+            // $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
+            // $request->avatar->move($destinationDir, $fileName);
+            // $attributes['avatar'] = '/assets/admin/img/'.$fileName;
+            $file = $request->avatar;
+            $file_name = str_slug($request->name).'.'.$file->getClientOriginalExtension();
+            $file->move('assets/admin/img',$file_name);
+            $attributes['avatar'] = $file_name;
         }
 
         $product = Product::create($attributes);
@@ -133,10 +137,14 @@ class ProductController extends Controller
 
         if ($request->hasFile('avatar'))
         {
-            $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
-            $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
-            $request->avatar->move($destinationDir, $fileName);
-            $attributes['avatar'] = $fileName;
+            // $destinationDir = public_path('assets/admin/img'); //trả về vị trí đúng (đường dẫn cứng)
+            // $fileName = uniqid('vietpro').'.'.$request->avatar->extension();
+            // $request->avatar->move($destinationDir, $fileName);
+            // $attributes['avatar'] = '/assets/admin/img/'.$fileName;
+            $file = $request->avatar;
+            $file_name = str_slug($request->name).'.'.$file->getClientOriginalExtension();
+            $file->move('assets/admin/img',$file_name);
+            $attributes['avatar'] = $file_name;
         }
 
         $product = $product->fill($attributes);
