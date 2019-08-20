@@ -2,7 +2,7 @@
     <form role="search"></form>
     <ul class="nav menu">
         <li class="active">
-            <a href="index.html">
+            <a href="{{ route('admin.dashboard.index') }}">
                 <svg class="glyph stroked dashboard-dial">
                     <use xlink:href="#stroked-dashboard-dial"></use>
                 </svg> Tổng quan

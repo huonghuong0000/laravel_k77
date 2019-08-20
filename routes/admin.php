@@ -25,6 +25,11 @@ Route::group(['middleware' => 'auth'], function() {
         'parameters' => ['products' => 'id']
     ]);
     
+    Route::get('users/{id}/del', [
+        'as' => 'admin.users.del',
+        'uses' => 'UserController@del'
+    ]);
+
     Route::resource('users', 'UserController', [
         'as' => 'admin',
         'parameters' => ['users' => 'id']

@@ -130,8 +130,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    public function del($id)
     {
-        //
+        User::destroy($id);
+        return redirect()->route('admin.users.index')->with('success', 'Xóa tài khoản thành công!!!');
     }
 }

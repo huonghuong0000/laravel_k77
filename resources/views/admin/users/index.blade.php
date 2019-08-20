@@ -7,7 +7,7 @@
     <div class="row">
         <ol class="breadcrumb">
             <li>
-                <a href="#">
+                <a href="{{ route('admin.dashboard.index') }}">
                     <svg class="glyph stroked home">
                         <use xlink:href="#stroked-home"></use>
                     </svg>
@@ -24,6 +24,12 @@
         </div>
     </div>
     <!--/.row-->
+
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session()->get('success') }}
+        </div>
+    @endif
 
     <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-12">
@@ -69,7 +75,7 @@
                                                     <i class="fa fa-pencil" aria-hidden="true">
                                                     </i> Sửa
                                                 </a>
-                                                <a href="#" class="btn btn-danger">
+                                                <a onclick="return Del_user()" href="{{ route('admin.users.del', $user->id) }}" class="btn btn-danger">
                                                     <i class="fa fa-trash" aria-hidden="true">
                                                     </i> Xóa
                                                 </a>
@@ -81,20 +87,6 @@
 
 
                                     {{-- <tr>
-                                        <td>1</td>
-                                        <td>Admin@gmail.com</td>
-                                        <td>Nguyễn thế phúc</td>
-                                        <td>Thường tín</td>
-                                        <td>0356653300</td>
-                                        <td>1</td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning"><i class="fa fa-pencil"
-                                                    aria-hidden="true"></i> Sửa</a>
-                                            <a href="#" class="btn btn-danger"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i> Xóa</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td>1</td>
                                         <td>Admin@gmail.com</td>
                                         <td>Nguyễn thế phúc</td>
@@ -129,3 +121,12 @@
 <!--end main-->
 
 @endsection
+
+@push('js')
+    <script>
+        function Del_user()
+        {
+            return confirm('Bạn có chắc muốn xóa user không???')
+        }
+    </script>
+@endpush
