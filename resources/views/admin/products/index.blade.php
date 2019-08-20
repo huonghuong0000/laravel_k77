@@ -87,8 +87,7 @@
                                                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning">
                                                     <i class="fa fa-pencil" aria-hidden="true"></i> Sửa
                                                 </a>
-                                                <a onclick="return Del('{{ $product->name }}')" 
-                                                   href="{{ route('admin.products.destroy', $product->id) }}" class="btn btn-danger">
+                                                <a onclick="return Del_product()" href="{{ route('admin.products.del', $product->id) }}" class="btn btn-danger">
                                                     <i class="fa fa-trash" aria-hidden="true"></i> Xóa
                                                 </a>
                                             </td>
@@ -115,9 +114,9 @@
 
 @push('js')
     <script>
-        function Del(name)
+        function Del_product()
         {
-            return confirm("Bạn có chắc muốn xóa sản phẩm: " + name)
+            return confirm('Bạn có chắc muốn xóa sản phẩm không???')
         }
     </script>
 @endpush

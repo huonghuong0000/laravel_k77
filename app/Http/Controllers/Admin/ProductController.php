@@ -171,11 +171,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del($id)
     {
         // echo 'Xóa sp';
-        $product = Product::destroy($id);
-        return redirect()->route('admin.products.index')
-        ->with('success','Xóa sản phẩm thành công !!!');
+        Product::destroy($id);
+        return redirect()->route('admin.products.index')->with('success','Xóa sản phẩm thành công !!!');
     }
 }

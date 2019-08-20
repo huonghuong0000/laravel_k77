@@ -19,6 +19,10 @@ Route::group(['middleware' => 'auth'], function() {
         'uses' => 'DashboardController@index'
     ]);
     
+    Route::get('products/{id}/del', [
+        'as' => 'admin.products.del',
+        'uses' => 'ProductController@del'
+    ]);
     
     Route::resource('products', 'ProductController', [
         'as' => 'admin',
